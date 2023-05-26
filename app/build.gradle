@@ -42,6 +42,7 @@ android {
 
 dependencies {
 
+    implementation 'androidx.core:core-ktx:1.10.1'
     def room_version = "2.5.1"
 
     implementation 'androidx.core:core-ktx:1.10.1'
@@ -75,8 +76,11 @@ dependencies {
 
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.14.9'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    //okhttp
+    implementation 'com.squareup.okhttp3:okhttp'
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     //glide url to image
     implementation 'com.github.bumptech.glide:glide:4.15.1'
