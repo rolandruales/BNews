@@ -1,8 +1,10 @@
 package com.example.bnews.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bnews.newsapi.Article
 import com.example.bnews.newsapi.NewsResponse
 import com.example.bnews.repository.NewsRepository
 import com.example.bnews.util.Resource
@@ -13,8 +15,12 @@ class NewsViewModel(
     private val repository: NewsRepository
 ) : ViewModel() {
 
-    private val latestNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
-    private val latestNewsPage = 1
+    val latestNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
+    val latestNewsPage = 1
+
+    init {
+        getLatestNews("us")
+    }
 
     fun getLatestNews(countryCode: String) = viewModelScope.launch {
         latestNews.postValue(Resource.Loading())

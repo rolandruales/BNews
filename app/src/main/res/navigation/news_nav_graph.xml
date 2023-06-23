@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_nav_graph"
     app:startDestination="@id/latestNewsFragment">
 
     <fragment
         android:id="@+id/latestNewsFragment"
         android:name="com.example.bnews.views.LatestNewsFragment"
-        android:label="LatestNewsFragment" >
+        android:label="LatestNewsFragment"
+        tools:layout="@layout/fragment_latest_news">
         <action
             android:id="@+id/action_latestNewsFragment_to_savedNewsFragment"
             app:destination="@id/savedNewsFragment" />
@@ -21,13 +23,16 @@
     <fragment
         android:id="@+id/savedNewsFragment"
         android:name="com.example.bnews.views.SavedNewsFragment"
-        android:label="SavedNewsFragment" />
+        android:label="SavedNewsFragment"
+        tools:layout="@layout/fragment_saved_news"/>
     <fragment
         android:id="@+id/searchNewsFragment"
         android:name="com.example.bnews.views.SearchNewsFragment"
-        android:label="SearchNewsFragment" />
+        android:label="SearchNewsFragment"
+        tools:layout="@layout/fragment_search_news"/>
     <fragment
         android:id="@+id/contentNewsFragment"
         android:name="com.example.bnews.views.ContentNewsFragment"
-        android:label="ContentNewsFragment" />
+        android:label="ContentNewsFragment"
+        tools:layout="@layout/fragment_content_news"/>
 </navigation>

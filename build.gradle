@@ -2,7 +2,8 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.8.20'
+        kotlin_version = '1.8.20-RC2'
+        nav_version = "2.5.2"
     }
     repositories {
         google()
@@ -13,8 +14,9 @@ buildscript {
     }
 
     dependencies {
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3"
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0-Beta'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:3.4.3'
     }
 }
 
