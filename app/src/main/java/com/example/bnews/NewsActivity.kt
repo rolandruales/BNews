@@ -23,7 +23,9 @@ class NewsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        //set home fragment as host fragment
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragmentContainer) as NavHostFragment
         navController = navHostFragment.navController
@@ -32,19 +34,20 @@ class NewsActivity : AppCompatActivity() {
 //        val navController = findNavController(R.id.newsNavHostFragment)
 //        binding.bottomNavView.setupWithNavController(navController)
 
+        //viewmodel factory to intantiate viewmodel class and return it
         val repository = NewsRepository(ArticleDatabase.getDatabase(this))
         val viewModelFactory = NewsViewModelProviderFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[NewsViewModel::class.java]
 
-        try {
-            setContentView(binding.root)
-            val newsRepository = NewsRepository(ArticleDatabase.getDatabase(this))
-            val noteViewModelProviderFactory = NewsViewModelProviderFactory(newsRepository)
-            viewModel = ViewModelProvider(
-                this,
-                noteViewModelProviderFactory
-            )[NewsViewModel::class.java]
-        } catch (_: java.lang.Exception) {
-        }
+//        try {
+//            setContentView(binding.root)
+//            val newsRepository = NewsRepository(ArticleDatabase.getDatabase(this))
+//            val noteViewModelProviderFactory = NewsViewModelProviderFactory(newsRepository)
+//            viewModel = ViewModelProvider(
+//                this,
+//                noteViewModelProviderFactory
+//            )[NewsViewModel::class.java]
+//        } catch (_: java.lang.Exception) {
+//        }
     }
 }

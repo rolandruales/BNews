@@ -1,10 +1,8 @@
 package com.example.bnews.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bnews.newsapi.Article
 import com.example.bnews.newsapi.NewsResponse
 import com.example.bnews.repository.NewsRepository
 import com.example.bnews.util.Resource
@@ -18,6 +16,9 @@ class NewsViewModel(
     val latestNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     val latestNewsPage = 1
 
+    val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
+    var searchNewsPage = 1
+
     init {
         getLatestNews("us")
     }
@@ -25,10 +26,25 @@ class NewsViewModel(
     fun getLatestNews(countryCode: String) = viewModelScope.launch {
         latestNews.postValue(Resource.Loading())
         val response = repository.getLatestNews(countryCode, latestNewsPage)
-        latestNews.postValue(handelLatestNewsResponse(response))
+        latestNews.postValue(handleLatestNewsResponse(response))
     }
 
-    private fun handelLatestNewsResponse(response: Response<NewsResponse>) : Resource<NewsResponse> {
+    fun searchNews(searchQuery: String) = viewModelScope.launch {
+        searchNews.postValue(Resource.Loading())
+        val response = repository.searchNews(searchQuery, searchNewsPage)
+        searchNews.postValue(handleSearchNewsResponse(response))
+    }
+
+    private fun handleLatestNewsResponse(response: Response<NewsResponse>) : Resource<NewsResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let {resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    private fun handleSearchNewsResponse(response: Response<NewsResponse>) : Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let {resultResponse ->
                 return Resource.Success(resultResponse)
