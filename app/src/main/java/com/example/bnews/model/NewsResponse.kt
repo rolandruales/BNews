@@ -1,4 +1,4 @@
-package com.example.bnews.newsapi
+package com.example.bnews.model
 
 data class NewsResponse(
     val articles: List<Article>,

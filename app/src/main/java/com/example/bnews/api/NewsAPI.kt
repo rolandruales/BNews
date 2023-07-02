@@ -1,6 +1,6 @@
 package com.example.bnews.api
 
-import com.example.bnews.newsapi.NewsResponse
+import com.example.bnews.model.NewsResponse
 import com.example.bnews.util.Constants.Companion.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET

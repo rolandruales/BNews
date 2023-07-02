@@ -1,12 +1,12 @@
 package com.example.bnews.database
 
 import androidx.room.TypeConverter
-import com.example.bnews.newsapi.Source
+import com.example.bnews.model.Source
 
 class Converter {
 
     @TypeConverter
-    fun fromSource(source: Source): String {
+    fun fromSource(source: Source): String? {
         return source.name
     }
 

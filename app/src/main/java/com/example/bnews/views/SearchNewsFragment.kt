@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bnews.NewsActivity
 import com.example.bnews.R
@@ -38,6 +40,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         setUpRecyclerview()
         setupViewModel()
         searchNews()
+        navigateToContent()
     }
 
     override fun onCreateView(
@@ -49,7 +52,6 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         return _binding.root
     }
 
-
     //search news function
     private fun searchNews() {
         var job: Job? = null
@@ -59,11 +61,24 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                 delay(SEARCH_NEWS_DELAY)
                 editable?.let {
                     if (editable.toString().isNotEmpty()){
-                        setUpRecyclerview()
                          viewModel.searchNews(editable.toString())
+                        setupViewModel()
+                        setupViewModel()
                     }
                 }
             }
+        }
+    }
+
+    private fun navigateToContent() {
+        newsAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+            }
+            findNavController().navigate(
+                R.id.action_searchNewsFragment_to_contentNewsFragment,
+                bundle
+            )
         }
     }
 

@@ -3,7 +3,7 @@ package com.example.bnews.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bnews.newsapi.NewsResponse
+import com.example.bnews.model.NewsResponse
 import com.example.bnews.repository.NewsRepository
 import com.example.bnews.util.Resource
 import kotlinx.coroutines.launch
