@@ -15,10 +15,12 @@ class NewsViewModel(
 ) : ViewModel() {
 
     val latestNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
-    val latestNewsPage = 1
+    var latestNewsPage = 1
+    var latestNewsResponse: NewsResponse? = null
 
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var searchNewsPage = 1
+    var searchNewsResponse: NewsResponse? = null
 
     init {
         getLatestNews("us")
@@ -39,7 +41,15 @@ class NewsViewModel(
     private fun handleLatestNewsResponse(response: Response<NewsResponse>) : Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let {resultResponse ->
-                return Resource.Success(resultResponse)
+                latestNewsPage++
+                if(latestNewsResponse == null) {
+                    latestNewsResponse = resultResponse
+                } else {
+                    val oldArticles = latestNewsResponse?.articles
+                    val newArticles = resultResponse.articles
+                    oldArticles?.addAll(newArticles)
+                }
+                return Resource.Success(latestNewsResponse ?: resultResponse)
             }
         }
         return Resource.Error(response.message())
@@ -48,7 +58,16 @@ class NewsViewModel(
     private fun handleSearchNewsResponse(response: Response<NewsResponse>) : Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let {resultResponse ->
-                return Resource.Success(resultResponse)
+                searchNewsPage++
+                searchNewsResponse = if(searchNewsResponse == null) {
+                    resultResponse
+                } else {
+                    val oldArticles = searchNewsResponse?.articles
+                    val newArticles = resultResponse.articles
+                    oldArticles?.addAll(newArticles)
+                    null
+                }
+                return Resource.Success(searchNewsResponse ?: resultResponse)
             }
         }
         return Resource.Error(response.message())

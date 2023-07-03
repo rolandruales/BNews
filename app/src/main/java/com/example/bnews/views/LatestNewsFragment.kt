@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -12,10 +13,12 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.bnews.NewsActivity
 import com.example.bnews.R
 import com.example.bnews.adapter.NewsAdapter
 import com.example.bnews.databinding.FragmentLatestNewsBinding
+import com.example.bnews.util.Constants.Companion.QUERY_PAGE_SIZE
 import com.example.bnews.util.Resource
 import com.example.bnews.viewmodel.NewsViewModel
 
@@ -51,6 +54,7 @@ class LatestNewsFragment : Fragment(R.layout.fragment_latest_news) {
                 layoutManager =LinearLayoutManager(requireContext())
                 newsAdapter = NewsAdapter()
                 adapter = newsAdapter
+                addOnScrollListener(this@LatestNewsFragment.scrollListener)
             }
         }
     }
@@ -74,7 +78,12 @@ class LatestNewsFragment : Fragment(R.layout.fragment_latest_news) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { newsResponse ->
-                        newsAdapter.differ.submitList(newsResponse.articles)
+                        newsAdapter.differ.submitList(newsResponse.articles.toList())
+                        val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
+                        isLastPage = viewModel.latestNewsPage == totalPages
+                        if (isLastPage) {
+                            _binding.latestNewsRecView.setPadding(0, 0, 0, 0)
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -92,9 +101,45 @@ class LatestNewsFragment : Fragment(R.layout.fragment_latest_news) {
 
     private fun showProgressBar() {
         _binding.progressBar.visibility = View.VISIBLE
+        isLoading = true
     }
 
     private fun hideProgressBar() {
-        _binding.progressBar.visibility = View.GONE
+        _binding.progressBar.visibility = View.INVISIBLE
+        isLoading = false
     }
+
+    var isLoading = false
+    var isLastPage = false
+    var isScrolling = false
+
+    //handles pagination of recyclerview
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                isScrolling = true
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+
+            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
+            val isNotAtBeginning = firstVisibleItemPosition >= 0
+            val isTotalMoreThanVisible = totalItemCount >= QUERY_PAGE_SIZE
+            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
+                    isTotalMoreThanVisible && isScrolling
+            if (shouldPaginate) {
+                viewModel.getLatestNews("us")
+                isScrolling = false
+            }
+        }
     }
+}
