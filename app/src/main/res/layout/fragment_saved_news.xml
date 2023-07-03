@@ -14,14 +14,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/latestNewsRecView"
-        app:layout_constraintEnd_toEndOf="@+id/latestNewsRecView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/latestNewsRecView" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

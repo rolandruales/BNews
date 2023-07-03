@@ -14,4 +14,10 @@ interface ArticleDAO {
 
     @Delete
     suspend fun deleteArticle(article: Article)
+
+    @Query("SELECT Count(*) FROM articles WHERE url = :url")
+    fun checkDuplicate(url: String): Long
+
+    @Query("DELETE FROM articles")
+    suspend fun deleteAll()
 }

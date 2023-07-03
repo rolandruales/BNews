@@ -3,6 +3,7 @@ package com.example.bnews.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bnews.model.Article
 import com.example.bnews.model.NewsResponse
 import com.example.bnews.repository.NewsRepository
 import com.example.bnews.util.Resource
@@ -51,5 +52,23 @@ class NewsViewModel(
             }
         }
         return Resource.Error(response.message())
+    }
+
+    fun saveArticle(article: Article) = viewModelScope.launch {
+        repository.upsert(article)
+    }
+
+    fun getSavedNews() = repository.getSavedNews()
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        repository.deleteArticle(article)
+    }
+
+    fun deleteAll() = viewModelScope.launch {
+        repository.deleteAll()
+    }
+
+    fun checkDuplicate(url: String): Boolean {
+        return repository.checkDuplicate(url)
     }
 }

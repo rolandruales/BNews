@@ -2,6 +2,7 @@ package com.example.bnews
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -55,6 +56,15 @@ class NewsActivity : AppCompatActivity() {
     private fun setTopLevelDestination() {
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.latestNewsFragment, R.id.savedNewsFragment, R.id.searchNewsFragment))
         setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    //hide bot nav in some fragments
+    fun showBotNav(show: Boolean) {
+        if (show) {
+            binding.bottomNavView.visibility = View.VISIBLE
+        } else {
+            binding.bottomNavView.visibility = View.GONE
+        }
     }
 
 
