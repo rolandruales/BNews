@@ -7,6 +7,9 @@ Technologies I used:
 * Retrofit
 * CRUD operation for read and delete news article
 
+<br>
+<br>
+
 1. Home - Displays latest news to RecyclerView from News Api
 <p align="center">
 <img src ="https://github.com/rolandruales/BNews/assets/84693350/7b1d13f3-a5c1-47f6-9819-f5b196f57686.jpg" width="275" height="550">
