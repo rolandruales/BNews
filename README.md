@@ -1,4 +1,6 @@
 # BNews
+## News application for Android OS
+__
 MVVM news android app using Room DB, Retrofit
 
 ![1](https://github.com/rolandruales/BNews/assets/84693350/7b1d13f3-a5c1-47f6-9819-f5b196f57686)
