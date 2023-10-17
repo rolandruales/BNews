@@ -1,5 +1,6 @@
 # BNews #
 __News application for Android OS__
+
 Technologies I used:
 * MVVM design pattern
 * Room Database
