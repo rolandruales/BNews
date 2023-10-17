@@ -1,4 +1,4 @@
-# BNews
+# BNews #
 __News application for Android OS__
 
 MVVM news android app using Room DB, Retrofit
